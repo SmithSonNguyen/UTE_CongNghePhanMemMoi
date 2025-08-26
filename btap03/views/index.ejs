@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student List</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Student List</h1>
+    <div class="actions">
+      <a href="/add" class="add-btn">+ Add Student</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach(student => { %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= student.age %></td>
+            <td><%= student.email %></td>
+            <td>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <a href="/edit/<%= student._id %>" class="edit-btn">Edit</a>
+                <form action="/delete/<%= student._id %>" method="POST" style="margin: 0;">
+                  <button type="submit" class="delete-btn">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
