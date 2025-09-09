@@ -1,18 +1,23 @@
-require("dotenv").config();
-//import các nguồn cần dùng
-const express = require("express"); // commonjs
-const configViewEngine = require("./config/viewEngine");
-const apiRoutes = require("./routes/api");
-const connection = require("./config/database");
-const { getHomepage } = require("./controllers/homeController");
-const cors = require("cors");
+import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
+import configViewEngine from "./config/viewEngine.js";
+import apiRoutes from "./routes/api.js";
+import { connection } from "./config/database.js";
+import { getHomepage } from "./controllers/homeController.js";
+import cors from "cors";
+
 const app = express(); // cấu hình app là express
-//cấu hình port, nếu tìm thấy port trong env, không thì trả về 8888
-const port = process.env.PORT || 8888;
+const port = process.env.PORT || 3000;
+
+// cấu hình middleware
 app.use(cors()); // config cors
 app.use(express.json()); // config req.body cho json
 app.use(express.urlencoded({ extended: true })); // for form data
-configViewEngine(app); // config template engine
+
+// config template engine
+configViewEngine(app);
 
 // config route cho view ejs
 const webAPI = express.Router();
@@ -20,17 +25,16 @@ webAPI.get("/", getHomepage);
 app.use("/", webAPI);
 
 // khai báo route cho API
-app.use("/v1/api/", apiRoutes);
+app.use("/v1/api", apiRoutes);
 
+// kết nối DB và khởi động server
 (async () => {
   try {
-    // Kết nối database using mongoose
-    await connection();
-    // lắng nghe port trong env
+    await connection(); // Kết nối database using mongoose
     app.listen(port, () => {
-      console.log(`Backend Nodejs App listening on port ${port}`);
+      console.log(`✅ Backend Nodejs App listening on port ${port}`);
     });
   } catch (error) {
-    console.log(">> Error connect to DB: ", error);
+    console.error("❌ Error connect to DB:", error);
   }
 })();

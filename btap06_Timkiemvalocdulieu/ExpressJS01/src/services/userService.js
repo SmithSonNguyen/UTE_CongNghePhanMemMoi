@@ -1,10 +1,10 @@
-require("dotenv").config();
-const User = require("../models/user");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import "dotenv/config";
+import { User } from "../models/user.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 const saltRounds = 10;
 
-const createUserService = async (name, email, password) => {
+export const createUserService = async (name, email, password) => {
   try {
     // check user exist
     const user = await User.findOne({ email });
@@ -31,7 +31,7 @@ const createUserService = async (name, email, password) => {
   }
 };
 
-const loginService = async (email, password) => {
+export const loginService = async (email, password) => {
   try {
     // fetch user by email
     const user = await User.findOne({ email: email });
@@ -75,7 +75,7 @@ const loginService = async (email, password) => {
   }
 };
 
-const getUserService = async (page = 1, limit = 10) => {
+export const getUserService = async (page = 1, limit = 10) => {
   try {
     // Convert page and limit to numbers and set defaults
     const pageNum = parseInt(page) || 1;
@@ -109,17 +109,11 @@ const getUserService = async (page = 1, limit = 10) => {
         hasNextPage,
         hasPrevPage,
         nextPage: hasNextPage ? pageNum + 1 : null,
-        prevPage: hasPrevPage ? pageNum - 1 : null
-      }
+        prevPage: hasPrevPage ? pageNum - 1 : null,
+      },
     };
   } catch (error) {
     console.log(error);
     return null;
   }
-};
-
-module.exports = {
-  createUserService,
-  loginService,
-  getUserService,
 };

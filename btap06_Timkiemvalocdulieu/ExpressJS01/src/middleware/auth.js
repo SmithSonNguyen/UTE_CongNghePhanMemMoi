@@ -1,7 +1,9 @@
-require("dotenv").config();
-const jwt = require("jsonwebtoken");
+import dotenv from "dotenv";
+dotenv.config();
 
-const auth = (req, res, next) => {
+import jwt from "jsonwebtoken";
+
+export const auth = (req, res, next) => {
   const white_lists = ["/", "/register", "/login"];
   if (white_lists.find((item) => `/v1/api` + item === req.originalUrl)) {
     next();
@@ -30,5 +32,3 @@ const auth = (req, res, next) => {
     }
   }
 };
-
-module.exports = auth;
