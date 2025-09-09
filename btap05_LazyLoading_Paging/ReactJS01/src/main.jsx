@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RegisterPage from "./pages/register.jsx";
 import UserPage from "./pages/user.jsx";
+import ProductPage from "./pages/product.jsx";
 import HomePage from "./pages/home.jsx";
 import LoginPage from "./pages/login.jsx";
 import { AuthWrapper } from "./components/context/auth.content.jsx";
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
       {
         path: "user",
         element: <UserPage />,
+      },
+      {
+        path: "product",
+        element: <ProductPage />,
       },
     ],
   },

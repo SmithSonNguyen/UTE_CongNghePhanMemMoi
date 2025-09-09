@@ -1,6 +1,7 @@
 # Hướng dẫn sử dụng Lazy Loading API
 
 ## Tổng quan
+
 API lazy loading cho phép bạn tải danh sách users theo từng trang thay vì tải tất cả cùng lúc, giúp cải thiện performance và trải nghiệm người dùng.
 
 ## API Endpoint
@@ -10,6 +11,7 @@ API lazy loading cho phép bạn tải danh sách users theo từng trang thay v
 Lấy danh sách users với pagination.
 
 #### Query Parameters:
+
 - `page` (optional): Số trang (mặc định: 1)
 - `limit` (optional): Số lượng users mỗi trang (mặc định: 10)
 
@@ -63,6 +65,7 @@ GET /v1/api/user?page=3&limit=20
 #### Response Fields:
 
 **Users Array:**
+
 - `_id`: ID của user
 - `name`: Tên user
 - `email`: Email user
@@ -71,6 +74,7 @@ GET /v1/api/user?page=3&limit=20
 - `updatedAt`: Thời gian cập nhật cuối
 
 **Pagination Object:**
+
 - `currentPage`: Trang hiện tại
 - `totalPages`: Tổng số trang
 - `totalUsers`: Tổng số users
@@ -90,22 +94,22 @@ async function getUsers(page = 1, limit = 10) {
   try {
     const response = await fetch(`/v1/api/user?page=${page}&limit=${limit}`, {
       headers: {
-        'Authorization': `Bearer ${token}` // Nếu cần authentication
-      }
+        Authorization: `Bearer ${token}`, // Nếu cần authentication
+      },
     });
-    
+
     const data = await response.json();
-    
+
     if (data.EC === 0) {
       return {
         users: data.DT.users,
-        pagination: data.DT.pagination
+        pagination: data.DT.pagination,
       };
     } else {
       throw new Error(data.EM);
     }
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error("Error fetching users:", error);
     throw error;
   }
 }
@@ -122,7 +126,7 @@ const loadUsers = async (page) => {
     setPagination(result.pagination);
     setCurrentPage(page);
   } catch (error) {
-    console.error('Failed to load users:', error);
+    console.error("Failed to load users:", error);
   }
 };
 
@@ -131,7 +135,7 @@ const loadMoreUsers = async () => {
   if (pagination.hasNextPage) {
     const nextPage = pagination.nextPage;
     const result = await getUsers(nextPage, 10);
-    setUsers(prev => [...prev, ...result.users]);
+    setUsers((prev) => [...prev, ...result.users]);
     setPagination(result.pagination);
   }
 };
@@ -140,13 +144,13 @@ const loadMoreUsers = async () => {
 ### Axios Example:
 
 ```javascript
-import axios from 'axios';
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: 'http://localhost:8888/v1/api',
+  baseURL: "http://localhost:8888/v1/api",
   headers: {
-    'Authorization': `Bearer ${token}`
-  }
+    Authorization: `Bearer ${token}`,
+  },
 });
 
 // Lấy users với pagination
@@ -166,6 +170,7 @@ node test-lazy-loading.js
 ```
 
 Hoặc sử dụng Postman/Insomnia với các URL sau:
+
 - `GET http://localhost:8888/v1/api/user?page=1&limit=5`
 - `GET http://localhost:8888/v1/api/user?page=2&limit=3`
 - `GET http://localhost:8888/v1/api/user` (default)

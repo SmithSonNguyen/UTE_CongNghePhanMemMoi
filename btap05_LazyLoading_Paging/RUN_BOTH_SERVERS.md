@@ -3,6 +3,7 @@
 ## 🚀 Cách 1: Sử dụng Script tự động (Khuyến nghị)
 
 ### Windows (Batch file):
+
 ```bash
 # Double-click file start-both.bat
 # Hoặc chạy trong Command Prompt:
@@ -10,6 +11,7 @@ start-both.bat
 ```
 
 ### Windows (PowerShell):
+
 ```powershell
 # Chạy trong PowerShell:
 .\start-both.ps1
@@ -20,7 +22,9 @@ start-both.bat
 ### Bước 1: Chuẩn bị Environment Variables
 
 #### Backend (ExpressJS01):
+
 Tạo file `.env` trong thư mục `ExpressJS01`:
+
 ```env
 MONGO_DB_URL=mongodb://localhost:27017/expressjs01
 JWT_SECRET=your_jwt_secret_key_here
@@ -29,7 +33,9 @@ PORT=8888
 ```
 
 #### Frontend (ReactJS01):
+
 Tạo file `.env` trong thư mục `ReactJS01`:
+
 ```env
 VITE_BACKEND_URL=http://localhost:8888
 ```
@@ -37,6 +43,7 @@ VITE_BACKEND_URL=http://localhost:8888
 ### Bước 2: Chạy Backend
 
 Mở Terminal/Command Prompt thứ nhất:
+
 ```bash
 cd ExpressJS01
 npm install
@@ -48,6 +55,7 @@ Backend sẽ chạy tại: `http://localhost:8888`
 ### Bước 3: Chạy Frontend
 
 Mở Terminal/Command Prompt thứ hai:
+
 ```bash
 cd ReactJS01
 npm install
@@ -76,6 +84,7 @@ Frontend sẽ chạy tại: `http://localhost:5173`
 ## 🔍 Kiểm tra kết nối
 
 ### 1. Test Backend API:
+
 ```bash
 # Test API endpoint
 curl http://localhost:8888/v1/api/user
@@ -85,12 +94,14 @@ http://localhost:8888
 ```
 
 ### 2. Test Frontend:
+
 ```bash
 # Mở browser:
 http://localhost:5173
 ```
 
 ### 3. Test Lazy Loading:
+
 1. Đăng nhập vào hệ thống
 2. Truy cập `/user`
 3. Quan sát users load từ trên xuống dưới
@@ -100,6 +111,7 @@ http://localhost:5173
 ### Lỗi thường gặp:
 
 #### 1. Backend không start được:
+
 ```bash
 # Kiểm tra port 8888 có bị chiếm không
 netstat -ano | findstr :8888
@@ -109,6 +121,7 @@ PORT=8889
 ```
 
 #### 2. Frontend không kết nối được backend:
+
 ```bash
 # Kiểm tra VITE_BACKEND_URL trong .env
 VITE_BACKEND_URL=http://localhost:8888
@@ -117,6 +130,7 @@ VITE_BACKEND_URL=http://localhost:8888
 ```
 
 #### 3. MongoDB connection error:
+
 ```bash
 # Đảm bảo MongoDB đang chạy
 # Hoặc sử dụng MongoDB Atlas
@@ -124,6 +138,7 @@ MONGO_DB_URL=mongodb+srv://username:password@cluster.mongodb.net/expressjs01
 ```
 
 #### 4. CORS error:
+
 ```bash
 # Kiểm tra CORS config trong server.js
 app.use(cors());
@@ -132,6 +147,7 @@ app.use(cors());
 ## 📱 Test Lazy Loading
 
 ### 1. Tạo users mẫu:
+
 ```bash
 # Sử dụng Postman hoặc curl để tạo users
 curl -X POST http://localhost:8888/v1/api/register \
@@ -140,12 +156,14 @@ curl -X POST http://localhost:8888/v1/api/register \
 ```
 
 ### 2. Test pagination:
+
 ```bash
 # Test với pagination
 curl "http://localhost:8888/v1/api/user?page=1&limit=5"
 ```
 
 ### 3. Quan sát lazy loading:
+
 1. Mở `http://localhost:5173/user`
 2. Users sẽ xuất hiện từ trên xuống dưới
 3. Click "Load More" để tải thêm users
@@ -154,6 +172,7 @@ curl "http://localhost:8888/v1/api/user?page=1&limit=5"
 ## 🎨 Customization
 
 ### Thay đổi delay animation:
+
 ```javascript
 // Trong UserList.jsx
 setTimeout(() => {
@@ -162,6 +181,7 @@ setTimeout(() => {
 ```
 
 ### Thay đổi số users mỗi lần load:
+
 ```javascript
 // Trong UserList.jsx
 const pageSize = 5; // Thay đổi số này

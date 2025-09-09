@@ -17,6 +17,7 @@ PORT=8888
 ```
 
 ## Lưu ý:
+
 - Thay đổi `MONGO_DB_URL` nếu bạn sử dụng MongoDB khác
 - Thay đổi `JWT_SECRET` thành key bí mật của bạn
 - Port 8888 là port mặc định cho backend
