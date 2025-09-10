@@ -1,0 +1,33 @@
+{
+  "name": "cart-library",
+  "version": "1.0.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "build": "npm run clean && rollup -c",
+    "publish-lib": "npm run build && npm publish"
+  },
+  "peerDependencies": {
+    "react": "^19.1.1",
+    "react-dom": ">=17"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.50.1",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/react": "^19.1.12"
+  }
+}
