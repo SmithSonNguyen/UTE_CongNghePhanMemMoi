@@ -7,30 +7,44 @@ export const getProductService = async (page = 1, limit = 10, filters = {}) => {
     const limitNum = parseInt(limit) || 10;
     const skip = (pageNum - 1) * limitNum;
 
-    // Xây dựng query filter
-    const query = {};
+    // Xây dựng query filter bằng $and
+    const andConditions = [];
 
     if (filters.category) {
-      query.category = filters.category;
+      andConditions.push({ category: filters.category });
     }
 
     if (filters.promotion !== undefined) {
-      query.promotion = filters.promotion;
+      andConditions.push({ promotion: filters.promotion });
     }
 
     if (filters.minPrice !== undefined || filters.maxPrice !== undefined) {
-      query.price = {};
-      if (filters.minPrice !== undefined) query.price.$gte = filters.minPrice;
-      if (filters.maxPrice !== undefined) query.price.$lte = filters.maxPrice;
+      const priceFilter = {};
+      if (filters.minPrice !== undefined) priceFilter.$gte = filters.minPrice;
+      if (filters.maxPrice !== undefined) priceFilter.$lte = filters.maxPrice;
+      andConditions.push({ price: priceFilter });
     }
 
     if (filters.minViews !== undefined) {
-      query.views = { $gte: filters.minViews };
+      andConditions.push({ views: { $gte: filters.minViews } });
     }
 
     if (filters.minRating !== undefined) {
-      query.rating = { $gte: filters.minRating };
+      andConditions.push({ rating: { $gte: filters.minRating } });
     }
+
+    // ✅ Thêm fuzzy search (theo tên hoặc mô tả)
+    if (filters.search) {
+      andConditions.push({
+        $or: [
+          { name: { $regex: filters.search, $options: "i" } },
+          { description: { $regex: filters.search, $options: "i" } },
+        ],
+      });
+    }
+
+    // Nếu không có filter nào thì query = {}
+    const query = andConditions.length > 0 ? { $and: andConditions } : {};
 
     // Tổng số sản phẩm
     const totalProducts = await Product.countDocuments(query);

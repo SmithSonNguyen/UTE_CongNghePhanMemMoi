@@ -9,13 +9,19 @@ import {
   Slider,
   Rate,
   Checkbox,
+  Input,
 } from "antd";
-import { ReloadOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  ReloadOutlined,
+  PlusOutlined,
+  SearchOutlined,
+} from "@ant-design/icons";
 import ProductCard from "./ProductCard";
-import { getProductApi } from "../util/api"; // bạn cần viết hàm gọi API
+import { getProductApi } from "../util/api";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
+const { Search } = Input;
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -31,6 +37,7 @@ const ProductList = () => {
   const [priceRange, setPriceRange] = useState([0, 60000000]);
   const [minViews, setMinViews] = useState(0);
   const [minRating, setMinRating] = useState(0);
+  const [keyword, setKeyword] = useState(""); // <-- thêm keyword
 
   const pageSize = 5;
 
@@ -49,6 +56,7 @@ const ProductList = () => {
         maxPrice: priceRange[1],
         minViews,
         minRating,
+        search: keyword, // <-- truyền keyword
       };
 
       const res = await getProductApi(page, pageSize, filters);
@@ -79,7 +87,7 @@ const ProductList = () => {
 
   useEffect(() => {
     fetchProducts(1, false);
-  }, [category, promotion, priceRange, minViews, minRating]);
+  }, [category, promotion, priceRange, minViews, minRating, keyword]);
 
   useEffect(() => {
     if (products.length > 0 && isInitialLoad) {
@@ -139,6 +147,17 @@ const ProductList = () => {
             Refresh
           </Button>
         </Space>
+      </div>
+
+      {/* Thanh tìm kiếm */}
+      <div style={{ marginBottom: "16px" }}>
+        <Search
+          placeholder="Tìm sản phẩm (fuzzy search)..."
+          allowClear
+          enterButton={<SearchOutlined />}
+          size="large"
+          onSearch={(val) => setKeyword(val)}
+        />
       </div>
 
       {/* Bộ lọc */}

@@ -11,15 +11,17 @@ export const getProduct = async (req, res) => {
       maxPrice,
       minViews,
       minRating,
+      search, // <-- thêm tham số search
     } = req.query;
 
     const filters = {
       category,
-      promotion: promotion === "true", // vì query string gửi lên là string
+      promotion: promotion === "true",
       minPrice: minPrice ? Number(minPrice) : undefined,
       maxPrice: maxPrice ? Number(maxPrice) : undefined,
       minViews: minViews ? Number(minViews) : undefined,
       minRating: minRating ? Number(minRating) : undefined,
+      search: search?.trim() || null, // <-- truyền search xuống service
     };
 
     const data = await getProductService(page, limit, filters);
